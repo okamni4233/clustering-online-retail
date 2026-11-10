@@ -13,21 +13,25 @@ El notebook `notebooks/customer_segmentation_kmeans.ipynb`:
 
 ## Resultados
 
-Silhouette por número de clústeres: 0,4329 (k = 2), 0,3365 (k = 3), 0,3371 (k = 4), 0,3161 (k = 5). Se elige k = 4 por interpretabilidad: k = 2 separa mejor, pero es demasiado grueso para definir acciones distintas.
+**El 16,5 % de los clientes genera el 64,9 % del ingreso.** La segmentación separa ese grupo de otros tres con comportamientos distintos:
 
-| Segmento | Clientes | Recencia media (días) | Frecuencia media (facturas) | Gasto medio (£) |
-|---|---|---|---|---|
-| Clientes VIP | 716 | 12,1 | 13,7 | 8.074,27 |
-| Regulares o potencialmente leales | 1.173 | 71,1 | 4,1 | 1.802,83 |
-| Recientes de bajo valor | 837 | 18,1 | 2,2 | 551,82 |
-| En riesgo | 1.612 | 182,5 | 1,3 | 343,45 |
+| Segmento | Clientes | % de clientes | % del ingreso | Recencia mediana (días) | Frecuencia mediana (facturas) | Acción propuesta |
+|---|---|---|---|---|---|---|
+| Clientes VIP | 716 | 16,5 | 64,9 | 8 | 10 | Retención prioritaria, sin descuentos generales |
+| Regulares o potencialmente leales | 1.173 | 27,0 | 23,7 | 56 | 4 | Aumentar la frecuencia de compra |
+| Recientes de bajo valor | 837 | 19,3 | 5,2 | 17 | 2 | Conseguir la segunda y tercera compra |
+| En riesgo | 1.612 | 37,2 | 6,2 | 177 | 1 | Reactivación de bajo costo |
+
+**Elección de k.** Silhouette: 0,4329 (k = 2), 0,3365 (k = 3), 0,3371 (k = 4), 0,3161 (k = 5). Se elige k = 4 por interpretabilidad: k = 2 separa mejor, pero es demasiado grueso para definir acciones distintas.
+
+**Estabilidad.** Al repetir K-Means con 20 semillas, la partición con k = 4 coincide con la de referencia con un índice de Rand ajustado medio de 0,971 (mínimo 0,942). Sobre 20 submuestras del 80 % de los clientes, la media es 0,950 (mínimo 0,819). Con k = 5 la estabilidad cae a 0,878 de media en submuestras.
 
 ## Limitaciones
 
-- Un silhouette de 0,34 indica separación moderada: los segmentos son cortes sobre un continuo, no grupos claramente aislados.
-- No se evaluó la estabilidad de los segmentos (otras semillas, submuestras) ni se validaron con una campaña real.
-- Los promedios de gasto son sensibles a valores extremos (hay clientes con compras muy grandes).
+- Un silhouette de 0,34 indica separación moderada: los segmentos son reproducibles, pero sus fronteras son difusas.
+- Las acciones propuestas son hipótesis a partir del perfil RFM. El dataset no trae campañas ni costos, así que su efecto no se puede medir aquí.
 - Se excluye el 24,9 % de las líneas por no tener identificador de cliente.
+- La recencia se mide respecto de la última fecha del dataset (diciembre de 2011) y el periodo cubre un solo año, por lo que no se distingue estacionalidad de abandono.
 
 ## Cómo reproducirlo
 
